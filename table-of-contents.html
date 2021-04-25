@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Table of contents</title>
+  </head>
+  <body>
+    <h1>Table of contents</h1>
+    <div id="contents"></div>
+    <script type="text/javascript">
+      function getPages(username, reponame, branch = 'main') {
+        return new Promise((resolve, reject) => {
+          fetch(`https://api.github.com/repos/${username}/${reponame}/git/trees/${branch}?recursive=1`)
+          .then((resp) => resp.json())
+          .then(({tree}) => {
+            const pages = tree.filter((file) => file.path.endsWith('.html'));
+            resolve(pages);
+          })
+          .catch(reject)
+        });
+      }
+      getPages('CubeyTheCube', 'Blog-Demo')
+      .then((pages) => {
+        pages.map((page) => page.path.slice(0, -5))
+        .forEach((page) => {
+          if(page == 'index') page = 'home';
+          document.getElementById('contents').innerHTML += page[0].toUpperCase() + page.slice(1);
+        });
+      });
+    </script>
+  </body>
+</html>
