@@ -23,7 +23,8 @@
         pages.map((page) => page.path.slice(0, -5))
         .forEach((page) => {
           if(page == 'index') page = 'home';
-          document.getElementById('contents').innerHTML += page[0].toUpperCase() + page.slice(1);
+          page = page.replace(/-/g, ' ');
+          document.getElementById('contents').innerHTML += page[0].toUpperCase() + page.slice(1) + '<br>';
         });
       });
     </script>
